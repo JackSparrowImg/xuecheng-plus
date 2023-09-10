@@ -1,0 +1,28 @@
+server:
+  servlet:
+    context-path: /content
+  port: 63040
+#微服务配置
+spring:
+  application:
+    name: content-api
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://182.92.128.211:3306/xuecheng_content?serverTimezone=UTC&userUnicode=true&useSSL=false
+    username: root
+    password: "015610"
+  redis:
+    host: 182.92.128.211
+    port: 6379
+    password: "015610"
+# 日志文件配置路径
+logging:
+  config: classpath:log4j2-dev.xml
+
+swagger:
+  title: "朋辈辅导在线内容管理系统"
+  description: "内容系统管理系统对课程相关信息进行管理"
+  base-package: com.tunan.content
+  enabled: true
+  version: 1.0.0
+
