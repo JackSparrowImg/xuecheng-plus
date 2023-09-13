@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>xuecheng-plus-system</artifactId>
-        <groupId>com.xuecheng</groupId>
+        <groupId>com.tunan</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>xuecheng-plus-system-model</artifactId>
