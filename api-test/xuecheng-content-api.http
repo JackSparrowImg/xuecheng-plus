@@ -1,0 +1,12 @@
+###查询课程信息
+POST {{content_host}}/content/course/list?pageNo=1&pageSize=2
+Content-Type: application/json
+
+{
+  "auditStatus": "202004",
+  "courseName": "java",
+  "publishStatus": ""
+}
+
+### 课程分类信息查询测试接口
+GET {{content_host}}/content/course-category/tree-nodes
