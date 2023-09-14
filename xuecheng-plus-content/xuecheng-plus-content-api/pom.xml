@@ -11,11 +11,13 @@
 
 
     <dependencies>
+
         <dependency>
             <groupId>com.tunan</groupId>
-            <artifactId>xuecheng-plus-content-service</artifactId>
+            <artifactId>xuecheng-plus-base</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
         <dependency>
             <groupId>com.tunan</groupId>
             <artifactId>xuecheng-plus-content-service</artifactId>

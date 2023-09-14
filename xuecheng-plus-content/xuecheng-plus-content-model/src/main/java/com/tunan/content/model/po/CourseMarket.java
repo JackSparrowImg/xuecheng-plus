@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -31,7 +32,7 @@ public class CourseMarket implements Serializable {
     /**
      * 现价
      */
-    private Float price;
+    private BigDecimal price;
 
     /**
      * 原价
