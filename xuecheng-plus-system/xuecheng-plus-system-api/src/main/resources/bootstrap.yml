@@ -6,23 +6,29 @@ server:
 spring:
   application:
     name: system-api
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://182.92.128.211:3306/xuecheng_system?serverTimezone=UTC&userUnicode=true&useSSL=false
-    username: root
-    password: "015610"
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      discovery:
+        namespace: dev
+        group: xuecheng-plus-project
+      config: # 配置文件相关信息
+        namespace: dev
+        group: xuecheng-plus-project
+        file-extension: yaml
+        refresh-enabled: true
+        extension-configs:
+          - data-id: system-service-${spring.profiles.active}.yaml
+            group: xuecheng-plus-project
+            refresh: true
+        shared-configs:
+          - data-id: swagger-${spring.profiles.active}.yaml
+            group: xuecheng-plus-common
+            refresh: true
+          - data-id: logging-${spring.profiles.active}.yaml
+            group: xuecheng-plus-common
+            refresh: true
   redis:
     host: 182.92.128.211
     port: 6379
     password: "015610"
-# 日志文件配置路径
-logging:
-  config: classpath:log4j2-dev.xml
-
-# swagger 文档配置
-swagger:
-  title: "学成在线系统管理"
-  description: "系统管理接口"
-  base-package: com.xuecheng.system
-  enabled: true
-  version: 1.0.0

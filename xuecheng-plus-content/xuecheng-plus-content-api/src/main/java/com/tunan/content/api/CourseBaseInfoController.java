@@ -4,7 +4,6 @@ import com.tunan.base.model.PageParams;
 import com.tunan.base.model.PageResult;
 import com.tunan.content.model.dto.AddCourseDto;
 import com.tunan.content.model.dto.CourseBaseInfoDto;
-import com.tunan.content.model.dto.EditCourseDto;
 import com.tunan.content.model.dto.QueryCourseParamsDto;
 import com.tunan.content.model.po.CourseBase;
 import com.tunan.content.service.CourseBaseInfoService;
@@ -59,9 +58,18 @@ public class CourseBaseInfoController {
 
     @ApiOperation("修改课程基础信息")
     @PutMapping("/course")
-    public CourseBaseInfoDto modifyCourseBase(@RequestBody @Validated EditCourseDto editCourseDto){
+    public CourseBaseInfoDto modifyCourseBase(@RequestBody @Validated CourseBaseInfoDto courseBaseInfoDto){
         //机构id，由于认证系统没有上线暂时硬编码
         Long companyId = 1232141425L;
-        return courseBaseInfoService.updateCourseBase(companyId,editCourseDto);
+
+        //此处有bug，没有将参数全部接收。
+        return courseBaseInfoService.updateCourseBase(companyId,courseBaseInfoDto);
     }
+
+    @ApiOperation("根据课程id删除课程")
+    @DeleteMapping("/course/{id}")
+    public void deleteCourse(@PathVariable Long id){
+        courseBaseInfoService.deleteCourseInfo(id);
+    }
+
 }

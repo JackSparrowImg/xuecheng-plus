@@ -37,7 +37,7 @@
         <result column="one_parentid"     property="parentid" />
         <result column="one_grade"  property="grade" />
         <result column="one_mediaType"   property="mediaType" />
-        <result column="one_stratTime"   property="stratTime" />
+        <result column="one_stratTime"   property="startTime" />
         <result column="one_endTime"   property="endTime" />
         <result column="one_orderby"   property="orderby" />
         <result column="one_courseId"   property="courseId" />
@@ -50,7 +50,7 @@
             <result column="two_parentid"     property="parentid" />
             <result column="two_grade"  property="grade" />
             <result column="two_mediaType"   property="mediaType" />
-            <result column="two_stratTime"   property="stratTime" />
+            <result column="two_stratTime"   property="startTime" />
             <result column="two_endTime"   property="endTime" />
             <result column="two_orderby"   property="orderby" />
             <result column="two_courseId"   property="courseId" />
@@ -73,7 +73,7 @@
             one.parentid       one_parentid,
             one.grade          one_grade,
             one.media_type     one_mediaType,
-            one.start_time     one_stratTime,
+            one.start_time     one_startTime,
             one.end_time       one_endTime,
             one.orderby        one_orderby,
             one.course_id      one_courseId,
@@ -83,7 +83,7 @@
             two.parentid       two_parentid,
             two.grade          two_grade,
             two.media_type     two_mediaType,
-            two.start_time     two_stratTime,
+            two.start_time     two_startTime,
             two.end_time       two_endTime,
             two.orderby        two_orderby,
             two.course_id      two_courseId,
@@ -100,6 +100,10 @@
                  two.orderby
     </select>
 
+
+    <select id="selectChildrenCount" resultType="int">
+        SELECT COUNT(*) FROM `teachplan` where parentid = #{id}
+    </select>
 
 
 </mapper>

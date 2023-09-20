@@ -117,3 +117,61 @@ Content-Type: application/json
   "status" : null,
   "teachPlanId" : 240
 }
+
+
+### 删除课程计划
+DELETE {{content_host}}/content/teachplan/21
+
+
+### docker启动nacos命令
+docker run -d \
+--name nacos \
+-p 8848:8848  -p 9848:9848 -p 9849:9849 \
+--privileged=true \
+-v /docker-data/nacos/logs/:/home/nacos/logs \
+-v /docker-data/nacos/conf/:/home/nacos/conf \
+nacos/nacos-server
+
+
+
+
+### 课程查询列表
+POST {{gateway_host}}/content/course/list?pageNo=2&pageSize=1
+Content-Type: application/json
+
+{
+  "auditStatus": "202002",
+  "courseName": ""
+}
+
+### docker安装minio命令
+docker run -p 9000:9000 -p 9090:9090 \
+--net=host \
+--name minio \
+-d --restart=always \
+-e "MINIO_ACCESS_KEY=minioadmin" \
+-e "MINIO_SECRET_KEY=minioadmin" \
+-v /docker-data/minio/data:/data \
+-v /docker-data/minio/config:/root/.minio \
+minio/minio server \
+/data --console-address ":9090" -address ":9000"
+
+
+### 上传文件
+POST {{media_host}}/media/upload/coursefile
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="filedata"; filename="1.jpg"
+Content-Type: application/octet-stream
+
+< C:\Users\杜展鹏\Pictures\Camera Roll\wallhaven-vq9jgm.jpg
+
+
+
+### 根据课程id查询对应教师的基本信息
+GET {{gateway_host}}/content/courseTeacher/list/72
+
+
+### 查询全部的媒资列表
+POST {{gateway_host}}/media/files?pageNo=1&pageSize=10

@@ -10,7 +10,6 @@ import com.tunan.content.mapper.CourseCategoryMapper;
 import com.tunan.content.mapper.CourseMarketMapper;
 import com.tunan.content.model.dto.AddCourseDto;
 import com.tunan.content.model.dto.CourseBaseInfoDto;
-import com.tunan.content.model.dto.EditCourseDto;
 import com.tunan.content.model.dto.QueryCourseParamsDto;
 import com.tunan.content.model.po.CourseBase;
 import com.tunan.content.model.po.CourseCategory;
@@ -73,6 +72,7 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
     @Autowired
     CourseMarketMapper courseMarketMapper;
 
+
     @Transactional
     @Override
     public CourseBaseInfoDto createCourseBase(Long companyId, AddCourseDto dto) {
@@ -104,13 +104,10 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         CourseMarket courseMarketNew = new CourseMarket();
 
 
-        System.out.println("1111111111111================>>>>" + dto.toString());
 
         Long courseId = courseBaseNew.getId();
         BeanUtils.copyProperties(dto,courseMarketNew);
         courseMarketNew.setId(courseId);
-
-        System.out.println("111111111111111111===============>>>>>>>>" + courseMarketNew.toString());
 
 
         int i = saveCourseMarket(courseMarketNew);
@@ -128,7 +125,7 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         if(StringUtils.isBlank(charge)){
             throw new RuntimeException("收费规则没有选择");
         }
-        System.out.println(courseMarketNew.toString());
+
         //收费规则为收费
         if(charge.equals("201001")){
             if(courseMarketNew.getPrice() == null || courseMarketNew.getPrice().floatValue() <= 0){
@@ -172,7 +169,7 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
 
     @Transactional
     @Override
-    public CourseBaseInfoDto updateCourseBase(Long companyId, EditCourseDto dto) {
+    public CourseBaseInfoDto updateCourseBase(Long companyId, CourseBaseInfoDto dto) {
 
         //课程id
         Long courseId = dto.getId();
@@ -197,18 +194,55 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         CourseMarket courseMarket = new CourseMarket();
 
 
-        System.out.println("===============>>>>>>>>" +  dto.toString());
 
-        //修改的时候可能存在潜在bug，price不会被复制到sourseMarket中
         BeanUtils.copyProperties(dto,courseMarket);
 
-        System.out.println("===============>>>>>>>>" + courseMarket.toString());
 
         saveCourseMarket(courseMarket);
         //查询课程信息
         CourseBaseInfoDto courseBaseInfo = this.getCourseBaseInfo(courseId);
         return courseBaseInfo;
 
+    }
+
+
+    @Autowired
+    TeachplanServiceImpl teachplanService;
+
+    @Autowired
+    TeacherInfoServiceImpl teacherInfoServiceImpl;
+
+
+    @Override
+    public void deleteCourseInfo(Long id) {
+
+        //1. 首先根据课程id获取课程的相关信息
+        CourseBase courseBase = courseBaseMapper.selectById(id);
+
+        if(courseBase == null || StringUtils.equals("202002",courseBase.getAuditStatus()) != true){
+            return;
+        }
+
+
+
+        //2. 根据课程id删除课程营销信息,因为课程营销信息的主键就是课程id
+        int market = courseMarketMapper.deleteById(id);
+
+        //3. 根据课程id删除课程计划信息
+        int teachplan = teachplanService.delTeachplanByCourseId(id);
+
+        //4. 根据课程id删除课程计划媒资信息
+        int teachplanMedia = teachplanService.delTeachplanMediaByCourseId(id);
+
+        //5. 根据课程id删除该课程教师相关信息
+        int teacher = teacherInfoServiceImpl.deleteCourseTeacherInfo(id);
+
+        //6. 最后删除课程基本信息
+        int i = courseBaseMapper.deleteById(id);
+
+        if(market < 0 && teachplan < 0 && teachplanMedia < 0 && teacher < 0 && i < 1){
+            throw new RuntimeException("删除课程信息失败");
+        }
     }
 
 

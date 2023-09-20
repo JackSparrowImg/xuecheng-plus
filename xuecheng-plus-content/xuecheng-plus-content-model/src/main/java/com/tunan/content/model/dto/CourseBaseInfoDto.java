@@ -3,10 +3,12 @@ package com.tunan.content.model.dto;
 import com.tunan.content.model.po.CourseBase;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * @description 课程基本信息dto
- * @author Mr.M
- * @date 2022/9/7 17:44
+ * @author Jack
+ * @date 2023/9/19 17:44
  * @version 1.0
  */
 @Data
@@ -21,7 +23,7 @@ public class CourseBaseInfoDto extends CourseBase {
  /**
   * 价格
   */
- private Float price;
+ private BigDecimal price;
 
 
  /**

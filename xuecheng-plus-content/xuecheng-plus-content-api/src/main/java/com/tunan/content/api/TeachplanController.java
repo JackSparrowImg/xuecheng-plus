@@ -5,6 +5,7 @@ import com.tunan.content.model.dto.TeachplanDto;
 import com.tunan.content.service.TeachplanService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +38,25 @@ public class TeachplanController {
 
     @ApiOperation("课程计划创建或修改")
     @PostMapping("/teachplan")
-    public void saveTeachplan( @RequestBody SaveTeachplanDto teachplan){
+    public void saveTeachplan(@RequestBody SaveTeachplanDto teachplan){
         teachplanService.saveTeachplan(teachplan);
+    }
+
+    @ApiOperation("根据课程计划id删除章节")
+    @ApiImplicitParam(value = "teachPlanId",name = "课程计划id",required = true,dataType = "Long",paramType = "path")
+    @DeleteMapping("/teachplan/{teachPlanId}")
+    public void saveTeachplan(@PathVariable Long teachPlanId){
+        teachplanService.delTeachplan(teachPlanId);
+    }
+
+    @ApiOperation("将课程计划向下移动")
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "type",name = "调整类型",required = true,dataType = "String",paramType = "path"),
+            @ApiImplicitParam(value = "teachPlanId",name = "课程计划id",required = true,dataType = "Long",paramType = "path"),
+    })
+    @PostMapping("/teachplan/{type}/{teachPlanId}")
+    public void move(@PathVariable String type,@PathVariable Long teachPlanId){
+        teachplanService.moveTeachplan(type,teachPlanId);
     }
 
 }

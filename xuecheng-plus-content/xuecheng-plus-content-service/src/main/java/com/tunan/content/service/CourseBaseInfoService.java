@@ -4,7 +4,6 @@ import com.tunan.base.model.PageParams;
 import com.tunan.base.model.PageResult;
 import com.tunan.content.model.dto.AddCourseDto;
 import com.tunan.content.model.dto.CourseBaseInfoDto;
-import com.tunan.content.model.dto.EditCourseDto;
 import com.tunan.content.model.dto.QueryCourseParamsDto;
 import com.tunan.content.model.po.CourseBase;
 
@@ -50,5 +49,7 @@ public interface CourseBaseInfoService {
      * @author Mr.Jack
      * @date 2023/9/13 17:51
      */
-    public CourseBaseInfoDto updateCourseBase(Long companyId, EditCourseDto dto);
+    public CourseBaseInfoDto updateCourseBase(Long companyId, CourseBaseInfoDto dto);
+
+    void deleteCourseInfo(Long id);
 }
