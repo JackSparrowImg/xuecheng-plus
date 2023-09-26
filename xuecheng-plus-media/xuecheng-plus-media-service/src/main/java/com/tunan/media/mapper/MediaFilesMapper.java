@@ -9,7 +9,7 @@ import com.tunan.media.model.po.MediaFiles;
  * 媒资信息 Mapper 接口
  * </p>
  *
- * @author itcast
+ * @author Jack
  */
 public interface MediaFilesMapper extends BaseMapper<MediaFiles> {
 

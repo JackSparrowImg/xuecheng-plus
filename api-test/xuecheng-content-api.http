@@ -175,3 +175,42 @@ GET {{gateway_host}}/content/courseTeacher/list/72
 
 ### 查询全部的媒资列表
 POST {{gateway_host}}/media/files?pageNo=1&pageSize=10
+
+
+docker run  -p 8088:8088 \
+-d --name=xxl-job-admin --restart=always \
+-v /docker-data/xxl-job/data/applogs/application.properties:/application.properties \
+-v /docker-data/xxl-job/data/applogs/logs:/data/applogs \
+-e PARAMS='--spring.config.location=/application.properties' xuxueli/xxl-job-admin:2.3.1
+
+
+### 课程计划绑定视频
+POST {{media_host}}/media/teachplan/association/media
+Content-Type: application/json
+
+{
+  "mediaId": "",
+  "fileName": "",
+  "teachplanId": ""
+}
+
+
+### docker安装nginx
+docker run -p 80:80 \
+--name nginx \
+-v /docker-data/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
+-v /docker-data/nginx/conf/conf.d:/etc/nginx/conf.d \
+-v /docker-data/nginx/log:/var/log/nginx \
+-v /docker-data/nginx/html:/usr/share/nginx/html \
+-d nginx:latest
+
+
+docker cp nginx:/etc/nginx/nginx.conf /docker-data/nginx/conf/nginx.conf
+
+docker cp nginx:/etc/nginx/conf.d /docker-data/nginx/conf/conf.d
+
+docker cp nginx:/usr/share/nginx/html /docker-data/nginx/
+
+
+### 课程发布
+POST {{content_host}}/content/coursepublish/2

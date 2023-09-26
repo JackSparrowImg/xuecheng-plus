@@ -8,7 +8,7 @@ import com.tunan.media.model.po.MqMessage;
  *  Mapper 接口
  * </p>
  *
- * @author itcast
+ * @author Jack
  */
 public interface MqMessageMapper extends BaseMapper<MqMessage> {
 

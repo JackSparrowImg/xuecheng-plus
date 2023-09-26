@@ -3,8 +3,8 @@ package com.tunan.base.exception;
 
 /**
  * @description 通用错误信息
- * @author Mr.M
- * @date 2022/9/6 11:29
+ * @author Jack
+ * @date 2023/9/25 11:29
  * @version 1.0
  */
 public enum CommonError {

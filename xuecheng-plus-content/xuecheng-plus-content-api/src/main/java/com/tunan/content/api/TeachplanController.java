@@ -1,5 +1,6 @@
 package com.tunan.content.api;
 
+import com.tunan.content.model.dto.BindTeachplanMediaDto;
 import com.tunan.content.model.dto.SaveTeachplanDto;
 import com.tunan.content.model.dto.TeachplanDto;
 import com.tunan.content.service.TeachplanService;
@@ -58,5 +59,20 @@ public class TeachplanController {
     public void move(@PathVariable String type,@PathVariable Long teachPlanId){
         teachplanService.moveTeachplan(type,teachPlanId);
     }
+
+
+    @ApiOperation(value = "课程计划和媒资信息绑定")
+    @PostMapping("/teachplan/association/media")
+    void associationMedia(@RequestBody BindTeachplanMediaDto bindTeachplanMediaDto){
+        teachplanService.associationMedia(bindTeachplanMediaDto);
+    }
+
+    @ApiOperation(value = "课程计划和媒资信息解绑")
+    @DeleteMapping("/teachplan/association/media/{teachplanId}/{media_id}")
+    public void delassociationMedia(@PathVariable String teachplanId,@PathVariable String media_id ){
+        teachplanService.disassociationMedia(teachplanId,media_id);
+    }
+
+
 
 }

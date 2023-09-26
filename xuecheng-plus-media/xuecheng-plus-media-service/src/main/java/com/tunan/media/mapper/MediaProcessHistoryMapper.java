@@ -8,7 +8,7 @@ import com.tunan.media.model.po.MediaProcessHistory;
  *  Mapper 接口
  * </p>
  *
- * @author itcast
+ * @author Jack
  */
 public interface MediaProcessHistoryMapper extends BaseMapper<MediaProcessHistory> {
 

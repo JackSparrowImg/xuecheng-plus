@@ -28,6 +28,8 @@ spring:
           - data-id: logging-${spring.profiles.active}.yaml
             group: xuecheng-plus-common
             refresh: true
+  profiles:
+    active: dev
   redis:
     host: 182.92.128.211
     port: 6379

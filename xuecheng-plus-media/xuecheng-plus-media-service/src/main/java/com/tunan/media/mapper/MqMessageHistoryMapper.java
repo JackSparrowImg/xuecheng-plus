@@ -9,7 +9,7 @@ import com.tunan.media.model.po.MqMessageHistory;
  *  Mapper 接口
  * </p>
  *
- * @author itcast
+ * @author Jack
  */
 public interface MqMessageHistoryMapper extends BaseMapper<MqMessageHistory> {
 

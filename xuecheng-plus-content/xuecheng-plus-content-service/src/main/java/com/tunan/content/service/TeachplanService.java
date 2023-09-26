@@ -1,7 +1,9 @@
 package com.tunan.content.service;
 
+import com.tunan.content.model.dto.BindTeachplanMediaDto;
 import com.tunan.content.model.dto.SaveTeachplanDto;
 import com.tunan.content.model.dto.TeachplanDto;
+import com.tunan.content.model.po.TeachplanMedia;
 
 import java.util.List;
 
@@ -20,4 +22,8 @@ public interface TeachplanService {
 
 
     void moveTeachplan(String type, Long teachPlanId);
+
+    public TeachplanMedia associationMedia(BindTeachplanMediaDto bindTeachplanMediaDto);
+
+    void disassociationMedia(String teachplanId, String media_id);
 }
