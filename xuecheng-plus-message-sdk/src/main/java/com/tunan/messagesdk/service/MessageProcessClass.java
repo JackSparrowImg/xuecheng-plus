@@ -1,8 +1,6 @@
-package com.xuecheng.messagesdk;
+package com.tunan.messagesdk.service;
 
 import com.tunan.messagesdk.po.MqMessage;
-import com.tunan.messagesdk.service.MessageProcessAbstract;
-import com.tunan.messagesdk.service.MqMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @package: com.tunan.messagesdk
  * @className: MessageProcessClass
  * @author: Jack
- * @description: 消息处理测试类，集成MessageProcessAbstract
+ * @description: 消息处理测试类，继承MessageProcessAbstract
  * @date: 2023/9/25 16:05
  * @version: 1.0
  */

@@ -2,6 +2,7 @@ package com.tunan;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * @projectName: xuecheng-plus
@@ -13,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @version: 1.0
  */
 
+@EnableFeignClients(basePackages = {"com.tunan.content.feignclient"})
 @SpringBootApplication
 public class ContentApplication {
     public static void main(String[] args) {

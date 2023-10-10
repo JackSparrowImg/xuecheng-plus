@@ -1,7 +1,10 @@
 package com.tunan.content.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.tunan.base.exception.CommonError;
 import com.tunan.base.exception.XueChengPlusException;
+import com.tunan.content.config.MultipartSupportConfig;
+import com.tunan.content.feignclient.MediaServiceClient;
 import com.tunan.content.mapper.CourseBaseMapper;
 import com.tunan.content.mapper.CourseMarketMapper;
 import com.tunan.content.mapper.CoursePublishMapper;
@@ -16,13 +19,25 @@ import com.tunan.content.model.po.CoursePublishPre;
 import com.tunan.content.service.CourseBaseInfoService;
 import com.tunan.content.service.CoursePublishService;
 import com.tunan.content.service.TeachplanService;
+import com.tunan.messagesdk.po.MqMessage;
+import com.tunan.messagesdk.service.MqMessageService;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,6 +50,7 @@ import java.util.List;
  * @version: 1.0
  */
 
+@Slf4j
 @Service
 public class CoursePublishServiceImpl implements CoursePublishService {
 
@@ -134,6 +150,13 @@ public class CoursePublishServiceImpl implements CoursePublishService {
     @Autowired
     CoursePublishMapper coursePublishMapper;
 
+    @Autowired
+    MqMessageService mqMessageService;
+
+    @Autowired
+    MediaServiceClient mediaServiceClient;
+
+
     @Transactional
     @Override
     public void publish(Long companyId, Long courseId) {
@@ -168,6 +191,65 @@ public class CoursePublishServiceImpl implements CoursePublishService {
 
     }
 
+    @Override
+    public File generateCourseHtml(Long courseId) {
+        Configuration configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+        //最终的静态文件
+        File htmlFile = null;
+        try{
+            //拿到classpath路径
+            String classpath = this.getClass().getResource("/").getPath();
+            //指定模板的目录
+            configuration.setDirectoryForTemplateLoading(new File(classpath+"/templates/"));
+            //指定编码
+            configuration.setDefaultEncoding("utf-8");
+
+            //得到模板
+            Template template = configuration.getTemplate("course_template.ftl");
+
+            //准备数据
+            CoursePreviewDto coursePreviewInfo = this.getCoursePreviewInfo(courseId);
+            HashMap<String,Object> map = new HashMap<>();
+            map.put("model",coursePreviewInfo);
+
+            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
+
+            //使用流将html写入文件
+            InputStream inputStream = IOUtils.toInputStream(html, "utf-8");
+
+            htmlFile = File.createTempFile("coursepublish",".html");
+            //输出文件
+            FileOutputStream fileOutputStream = new FileOutputStream(htmlFile);
+            //使用流将html写入文件
+            IOUtils.copy(inputStream,fileOutputStream);
+        }catch (Exception ex){
+            log.error("页面静态化出现问题，课程id:{}",courseId,ex);
+            ex.printStackTrace();
+        }
+        return htmlFile;
+    }
+
+    @Override
+    public void uploadCourseHtml(Long courseId, File file) {
+
+        try {
+            //将file转成multipartsupport
+            MultipartFile multipartFile = MultipartSupportConfig.getMultipartFile(file);
+
+            String upload = mediaServiceClient.upload(multipartFile, "course/" + courseId + ".html");
+
+            if(upload == null){
+                log.debug("远程调用走降级逻辑得到上传的结果为空，课程id：{}",courseId);
+                XueChengPlusException.cast("上传静态文件存在异常");
+            }
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+            XueChengPlusException.cast("上传静态文件存在异常");
+        }
+
+    }
+
 
     private void saveCoursePublish(Long courseId){
         //整合课程发布信息
@@ -188,6 +270,8 @@ public class CoursePublishServiceImpl implements CoursePublishService {
         }else{
             coursePublishMapper.updateById(coursePublish);
         }
+
+
         //更新课程基本表的发布状态
         CourseBase courseBase = courseBaseMapper.selectById(courseId);
         courseBase.setStatus("203002");
@@ -196,8 +280,10 @@ public class CoursePublishServiceImpl implements CoursePublishService {
     }
 
     private void saveCoursePublishMessage(Long courseId){
-
-
+        MqMessage mqMessage = mqMessageService.addMessage("course_publish", String.valueOf(courseId),null,null);
+        if(mqMessage == null){
+            XueChengPlusException.cast(CommonError.UNKOWN_ERROR);
+        }
     }
 
 

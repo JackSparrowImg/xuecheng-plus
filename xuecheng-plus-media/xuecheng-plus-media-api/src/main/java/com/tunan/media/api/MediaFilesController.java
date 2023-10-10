@@ -45,7 +45,7 @@ public class MediaFilesController {
 
     }
 
-    @ApiOperation("上传文件")
+    @ApiOperation("上传图片")
     @RequestMapping(value = "/upload/coursefile",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public UploadFileResultDto upload(@RequestPart("filedata") MultipartFile upload,
@@ -71,7 +71,7 @@ public class MediaFilesController {
         //文件路径
         String absolutePath = tempFile.getAbsolutePath();
         //上传文件
-        UploadFileResultDto uploadFileResultDto = mediaFileService.uploadFile(companyId, uploadFileParamsDto, absolutePath);
+        UploadFileResultDto uploadFileResultDto = mediaFileService.uploadFile(companyId, uploadFileParamsDto, absolutePath,objectName);
 
         return uploadFileResultDto;
     }
