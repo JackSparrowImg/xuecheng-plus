@@ -40,7 +40,7 @@
 <!--        </logger>-->
 <!--        <logger name="org.mybatis" level="INFO">-->
 <!--        </logger>-->
-<!--        <logger name="cn.Jack.wanxinp2p.consumer.mapper" level="DEBUG">-->
+<!--        <logger name="cn.itcast.wanxinp2p.consumer.mapper" level="DEBUG">-->
 <!--        </logger>-->
 
 <!--        <logger name="springfox" level="INFO">-->
@@ -49,13 +49,13 @@
 <!--        </logger>-->
 <!--        <logger name="com.netflix.discovery" level="INFO">-->
 <!--        </logger>-->
-
+<!--        -->
 <!--        <logger name="RocketmqCommon"  level="INFO" >-->
 <!--		</logger>-->
-
+<!--		-->
 <!--		<logger name="RocketmqRemoting" level="INFO"  >-->
 <!--		</logger>-->
-
+<!--		-->
 <!--		<logger name="RocketmqClient" level="WARN">-->
 <!--		</logger>-->
 
@@ -67,7 +67,7 @@
 
 <!--        <logger name="org.dromara.hmily.bonuspoint" level="WARN">-->
 <!--        </logger>-->
-
+<!--		-->
 <!--        &lt;!&ndash;OFF   0&ndash;&gt;-->
 <!--        &lt;!&ndash;FATAL   100&ndash;&gt;-->
 <!--        &lt;!&ndash;ERROR   200&ndash;&gt;-->

@@ -104,6 +104,12 @@
             <artifactId>feign-form-spring</artifactId>
             <version>3.8.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.tunan</groupId>
+            <artifactId>xuecheng-plus-search</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 
 
     </dependencies>

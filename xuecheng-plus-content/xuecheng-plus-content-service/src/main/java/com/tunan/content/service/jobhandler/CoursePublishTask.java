@@ -1,13 +1,18 @@
 package com.tunan.content.service.jobhandler;
 
 import com.tunan.base.exception.XueChengPlusException;
+import com.tunan.content.feignclient.SearchServiceClient;
+import com.tunan.content.mapper.CoursePublishMapper;
+import com.tunan.content.model.po.CoursePublish;
 import com.tunan.content.service.CoursePublishService;
 import com.tunan.messagesdk.po.MqMessage;
 import com.tunan.messagesdk.service.MessageProcessAbstract;
 import com.tunan.messagesdk.service.MqMessageService;
+import com.xuecheng.search.po.CourseIndex;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -58,14 +63,43 @@ public class CoursePublishTask extends MessageProcessAbstract {
     }
 
 
+    @Autowired
+    private SearchServiceClient searchServiceClient;
+    @Autowired
+    private CoursePublishMapper coursePublishMapper;
+
     //保存课程索引信息
     public void saveCourseIndex(MqMessage mqMessage,long courseId){
         log.debug("保存课程索引信息,课程id:{}",courseId);
-        try {
-            TimeUnit.SECONDS.sleep(2);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+
+        //任务id
+        Long taskId = mqMessage.getId();
+        MqMessageService mqMessageService = this.getMqMessageService();
+        //取出第二阶段状态
+        int stageTwo = mqMessageService.getStageTwo(taskId);
+
+
+        //任务幂等性处理
+        if(stageTwo > 0){
+            log.debug("课程索引信息已写入，无需执行.....");
+            return;
         }
+
+        //查询课程信息，调用搜索服务添加索引接口
+        //从课程发布表查询课程信息
+        CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
+
+        CourseIndex courseIndex = new CourseIndex();
+        BeanUtils.copyProperties(coursePublish,courseIndex);
+
+        //远程调用
+        Boolean add = searchServiceClient.add(courseIndex);
+        if(!add){
+            XueChengPlusException.cast("远程调用搜索服务添加课程索引");
+        }
+
+        //完成本阶段任务
+        mqMessageService.completedStageTwo(taskId);
 
     }
 
