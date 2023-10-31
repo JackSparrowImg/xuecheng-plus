@@ -1,0 +1,6 @@
+### 申请验证码
+POST {{gateway_host}}/checkcode/pic
+
+
+### 校验验证码
+POST {{checkcode_host}}/checkcode/verify?key=checkcode:65a1b3f882be48f39c16e0db8f2bcdc6&code=jev5

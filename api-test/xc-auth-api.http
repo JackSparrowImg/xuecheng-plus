@@ -3,11 +3,17 @@
 ### 第二步申请令牌
 POST {{auth_host}}/auth/oauth/token?client_id=XcWebApp&client_secret=XcWebApp&grant_type=authorization_code&code=qQQkDL&redirect_uri=http://www.tunan.cn
 
-### 密码模式
-POST {{auth_host}}/auth/oauth/token?client_id=XcWebApp&client_secret=XcWebApp&grant_type=password&username=zhangsan&password=123
+### 密码模式获取令牌
+POST {{auth_host}}/auth/oauth/token?client_id=XcWebApp&client_secret=XcWebApp&grant_type=password&username=t1&password=111111
 
 ### 解析令牌
-POST {{auth_host}}/auth/oauth/check_token?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsieHVlY2hlbmctcGx1cyJdLCJ1c2VyX25hbWUiOiJ6aGFuZ3NhbiIsInNjb3BlIjpbImFsbCJdLCJleHAiOjE2OTczNjMwNjEsImF1dGhvcml0aWVzIjpbInAxIl0sImp0aSI6IjI3MGQwZTA4LTkwMGQtNDYwZC05ZGMxLTUyYTk0YzdiNzI3YiIsImNsaWVudF9pZCI6IlhjV2ViQXBwIn0.hWiYSm4OcOFYLlp1E2UeX8huLC4EiN7SDcz6NF8SltA
+POST {{auth_host}}/auth/oauth/check_token?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsieHVlY2hlbmctcGx1cyJdLCJ1c2VyX25hbWUiOiJ7XCJjb21wYW55SWRcIjpcIjEyMzIxNDE0MjVcIixcImNyZWF0ZVRpbWVcIjpcIjIwMjItMDktMjhUMDg6MzI6MDNcIixcImlkXCI6XCI1MlwiLFwibmFtZVwiOlwiTeiAgeW4iFwiLFwic2V4XCI6XCIxXCIsXCJzdGF0dXNcIjpcIlwiLFwidXNlcm5hbWVcIjpcInQxXCIsXCJ1dHlwZVwiOlwiMTAxMDAyXCJ9Iiwic2NvcGUiOlsiYWxsIl0sImV4cCI6MTY5Nzk2NTQxNiwiYXV0aG9yaXRpZXMiOlsidGVzdCJdLCJqdGkiOiJiZmZiNGFjMS02OTYzLTQ3NjktYmM2MC1iMmI0YWRjZWI3NDUiLCJjbGllbnRfaWQiOiJYY1dlYkFwcCJ9.y49uAFyPNhG2EQu8i_ltvT5vh4EX7xDR9grpFDLPac8
+
+
+### 密码模式
+POST {{auth_host}}/auth/oauth/token?client_id=XcWebApp&client_secret=XcWebApp&grant_type=password&username={"username":"t1","password":"111111","authtype":"password"}
+
+
 
 
 

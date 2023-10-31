@@ -8,7 +8,7 @@ spring:
     name: system-api
   cloud:
     nacos:
-      server-addr: localhost:8848
+      server-addr: 192.168.196.46:8848
       discovery:
         namespace: dev
         group: xuecheng-plus-project
@@ -31,6 +31,6 @@ spring:
   profiles:
     active: dev
   redis:
-    host: 182.92.128.211
+    host: 192.168.196.46
     port: 6379
     password: "015610"

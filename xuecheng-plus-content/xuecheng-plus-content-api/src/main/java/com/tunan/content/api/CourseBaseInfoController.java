@@ -7,6 +7,7 @@ import com.tunan.content.model.dto.CourseBaseInfoDto;
 import com.tunan.content.model.dto.QueryCourseParamsDto;
 import com.tunan.content.model.po.CourseBase;
 import com.tunan.content.service.CourseBaseInfoService;
+import com.tunan.content.util.SecurityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,11 @@ public class CourseBaseInfoController {
     @ApiOperation("根据课程id查询课程基础信息")
     @GetMapping("/course/{courseId}")
     public CourseBaseInfoDto getCourseBaseById(@PathVariable Long courseId){
+        //获取当前用户身份
+//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        System.out.println(principal);
+        SecurityUtil.XcUser user = SecurityUtil.getUser();
+        System.out.println(user.getUsername());
         return courseBaseInfoService.getCourseBaseInfo(courseId);
     }
 
